@@ -1,4 +1,4 @@
-package com.studygroup.settings;
+package com.studygroup.settings.form;
 
 import com.studygroup.domain.Account;
 import lombok.Data;
@@ -23,11 +23,4 @@ public class Profile {
 
     private String profileImage;
 
-    public Profile(Account account){
-        this.bio= account.getBio();
-        this.url=account.getUrl();
-        this.occupation=account.getOccupation();
-        this.location=account.getLocation();
-        this.profileImage= account.getProfileImage();
-    }
 }
