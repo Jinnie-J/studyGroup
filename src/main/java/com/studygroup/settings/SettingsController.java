@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.management.Notification;
 import javax.validation.Valid;
 
 @Controller
@@ -30,6 +31,9 @@ public class SettingsController {
 
     static final String SETTINGS_PASSWORD_VIEW_NAME = "settings/password";
     static final String SETTINGS_PASSWORD_URL = "/settings/password";
+
+    static final String SETTINGS_NOTIFICATIONS_VIEW_NAME="/settings/notifications";
+    static final String SETTINGS_NOTIFICATIONS_URL="/settings/notifications";
 
     private final AccountService accountService;
 
@@ -70,5 +74,24 @@ public class SettingsController {
         attributes.addFlashAttribute("message","패스워드를 변경했습니다.");
         return "redirect:"+ SETTINGS_PASSWORD_URL;
 
+    }
+
+    @GetMapping(SETTINGS_NOTIFICATIONS_URL)
+    public String updateNotificationsForm(@CurrentUser Account account, Model model){
+        model.addAttribute(account);
+        model.addAttribute(new Notifications(account));
+        return SETTINGS_NOTIFICATIONS_VIEW_NAME;
+    }
+
+    @PostMapping(SETTINGS_NOTIFICATIONS_URL)
+    public String updateNotifications(@CurrentUser Account account, @Valid Notifications notifications, Errors errors,
+                                      Model model, RedirectAttributes attributes){
+        if(errors.hasErrors()){
+            model.addAttribute(account);
+            return SETTINGS_NOTIFICATIONS_VIEW_NAME;
+        }
+        accountService.updateNotifications(account, notifications);
+        attributes.addFlashAttribute("message","알림 설정을 변경했습니다.");
+        return "redirect:" + SETTINGS_NOTIFICATIONS_URL;
     }
 }
