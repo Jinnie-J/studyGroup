@@ -1,6 +1,7 @@
 package com.studygroup.account;
 
 import com.studygroup.domain.Account;
+import com.studygroup.domain.Tag;
 import com.studygroup.settings.form.Notifications;
 import com.studygroup.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-
+import java.util.Optional;
 
 
 @Service
@@ -118,5 +119,10 @@ public class AccountService implements UserDetailsService {
         mailMessage.setText("/login-by-email?token="+ account.getEmailCheckToken()+
                 "&email="+account.getEmail());
         javaMailSender.send(mailMessage);
+    }
+
+    public void addTag(Account account, Tag tag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getTags().add(tag));
     }
 }
