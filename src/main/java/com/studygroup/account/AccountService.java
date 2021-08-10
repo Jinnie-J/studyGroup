@@ -19,7 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -124,5 +127,16 @@ public class AccountService implements UserDetailsService {
     public void addTag(Account account, Tag tag) {
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getTags().add(tag));
+    }
+
+    public Set<Tag> getTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        // return byId.orElseThrow().getTags();
+        return Optional.ofNullable(byId).orElseThrow(NoSuchElementException::new).get().getTags();
+    }
+
+    public void removeTag(Account account, Tag tag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a ->  a.getTags().remove(tag));
     }
 }
