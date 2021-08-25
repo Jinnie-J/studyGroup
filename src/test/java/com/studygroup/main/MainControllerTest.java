@@ -2,7 +2,7 @@ package com.studygroup.main;
 
 import com.studygroup.account.AccountRepository;
 import com.studygroup.account.AccountService;
-import com.studygroup.account.SignUpForm;
+import com.studygroup.account.form.SignUpForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

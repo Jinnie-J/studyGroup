@@ -1,5 +1,6 @@
 package com.studygroup.account;
 
+import com.studygroup.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
