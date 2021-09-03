@@ -2,6 +2,8 @@ package com.studygroup.study;
 
 import com.studygroup.domain.Account;
 import com.studygroup.domain.Study;
+import com.studygroup.domain.Tag;
+import com.studygroup.domain.Zone;
 import com.studygroup.study.form.StudyDescriptionForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -54,6 +56,44 @@ public class StudyService {
 
     public void disableStudyBanner(Study study) {
         study.setUseBanner(false);
+    }
+
+    public void addTag(Study study, Tag tag){
+        study.getTags().add(tag);
+    }
+
+    public void removeTag(Study study, Tag tag){
+        study.getTags().remove(tag);
+    }
+
+    public void addZone(Study study, Zone zone){
+        study.getZones().add(zone);
+    }
+    public void removeZone(Study study, Zone zone){
+        study.getZones().remove(zone);
+    }
+    public Study getStudyToUpdateTag(Account account, String path){
+        Study study = repository.findAccountWithTagsByPath(path);
+        checkIfExistingStudy(path, study);
+        checkIfManager(account, study);
+        return study;
+    }
+    public Study getStudyToUpdateZone(Account account, String path){
+        Study study =repository.findAccountWithZonesByPath(path);
+        checkIfExistingStudy(path, study);
+        checkIfManager(account, study);
+        return study;
+    }
+
+    private void checkIfManager(Account account, Study study){
+        if (!account.isManagerOf(study)){
+            throw new AccessDeniedException("해당 기능을 사용할 수 없습니다.");
+        }
+    }
+    private void checkIfExistingStudy(String path, Study study){
+        if(study == null){
+            throw new IllegalArgumentException(path + "에 해당하는 스터디가 없습니다.");
+        }
     }
 
 }
