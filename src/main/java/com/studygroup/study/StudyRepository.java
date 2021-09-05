@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Entity;
-
 
 @Transactional(readOnly = true)
 public interface StudyRepository extends JpaRepository<Study, Long> {
@@ -24,4 +22,9 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     @EntityGraph(value = "Study.withManagers", type = EntityGraph.EntityGraphType.FETCH)
     Study findStudyWithManagersByPath(String path);
+
+    @EntityGraph(attributePaths = "Study.WithMembers", type = EntityGraph.EntityGraphType.FETCH)
+    Study findStudyWithMembersByPath(String path);
+
+
 }
